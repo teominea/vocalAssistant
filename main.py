@@ -1,90 +1,70 @@
-# import main_voice
-# main_voice.run_assistant()
-import tkinter as tk
-from PIL import Image, ImageTk, ImageDraw
-from tkinter import messagebox  # Import messagebox module
+import customtkinter
 import main_voice
+import threading
 
-# Rest of your functions...
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("green")
 
-def activate_assistant():
-    # Function to activate the vocal assistant (You can add your functionality here)
+root = customtkinter.CTk()
+root.geometry("500x350")
+
+def run():
     print("Vocal assistant activated!")
-    main_voice.run_assistant()
+    main_voice.main()
 
-def show_description():
-    # Function to show a brief description of the assistant
-    description = "Buna ziua si bine ati venit la olarit cu brad pitt"
-    messagebox.showinfo("Assistant Description", description)
+def clicked():
+    run()
 
+def get_commands():
 
-def resize_and_mask_image(image_path, size):
-    # Resize the image to fit the circular button and apply a circular mask
-    img = Image.open(image_path)
-    img = img.resize((size, size), Image.BICUBIC)
+    commands_window = customtkinter.CTk()
+    commands_window.geometry("500x400")
+    commands_window.title("Commands")
 
-    # Create a circular mask
-    mask = Image.new("L", (size, size), 0)
-    draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0, size, size), fill=255)
+    commands_label = customtkinter.CTkLabel(master=commands_window, text="Commands:", font=("Times New Roman", 18))
+    commands_label.pack(pady=10)
 
-    # Apply the circular mask to the image
-    masked_image = ImageTk.PhotoImage(Image.composite(img, Image.new('RGB', (size, size), 'white'), mask))
+    commands_list = customtkinter.CTkLabel(master=commands_window, font=("Times New Roman", 14),
+                                                text="1. Search celebrity\n2. Search movie\n3. Search recipe\n4. What is the time\n5. I want to learn\n"+
+                                                     "6. Translate\n7. Tell me a joke\n8. Set nickname\n9. Search on Google\n10. Play a song\n11. Set a reminder\n"+
+                                                    "12.Launch a game (Tetris/Snake/Doodle Jump)\n13. Take a note\n14. Read/Clear my notes\n15. How is the weather?")
+    commands_list.pack(pady=5)
 
-    return masked_image
-def create_main_window():
-    root = tk.Tk()
-    root.title("Voice Assistant")
+    close_button = customtkinter.CTkButton(master=commands_window, text="Close", command=commands_window.destroy)
+    close_button.pack(pady=10)
 
-    # Define the desired width and height for the button image
-    button_width = 50
-    button_height = 50
+    commands_window.mainloop()
+def help():
+    # customtkinter.messagebox.showinfo("Title", "Message")
+    help_window = customtkinter.CTk()
+    help_window.geometry("300x200")
+    help_window.title("Help")
 
-    # Customize colors
-    bg_color = "#f0f0f0"  # Light gray background
-    button_bg = "#4CAF50"  # Green button background
-    button_fg = "white"    # Text color for buttons
+    help_label = customtkinter.CTkLabel(master=help_window, text="Instructions on using the assistant:", font=("Times New Roman", 18))
+    help_label.pack(pady=10)
 
-    # Set window background color
-    root.configure(bg=bg_color)
+    instructions_label = customtkinter.CTkLabel(master=help_window, font=("Times New Roman", 14),
+                                                text="1. Speak clearly into the microphone.\n2. Click 'Activate Assistant' to trigger the assistant.")
+    instructions_label.pack(pady=5)
 
-    # Resize the image to fit the button
-    resized_image = resize_and_mask_image("C:\\Users\\Minea\\PycharmProjects\\pythonProject\\qm.png", button_width)  # Replace with your image path
+    close_button = customtkinter.CTkButton(master=help_window, text="Close", command=help_window.destroy, font=("Times New Roman", 15))
+    close_button.pack(pady=10)
 
-    # Button to activate the vocal assistant
-    activate_button = tk.Button(root, text="Activate Assistant", command=activate_assistant, width=20, bg=button_bg, fg=button_fg)
-    activate_button.pack(padx=20, pady=20)
+    command_button = customtkinter.CTkButton(master=help_window, text="Commands", command=get_commands, font=("Times New Roman", 15))
+    command_button.pack(pady=20, padx=10)
 
-    # Button with resized image for assistant description
-    description_button = tk.Button(root, image=resized_image, command=show_description, width=button_width, height=button_height, bg=button_bg)
-    description_button.image = resized_image  # To prevent image garbage collection
-    description_button.pack(pady=10)
+    help_window.mainloop()
 
-    root.mainloop()
+frame = customtkinter.CTkFrame(master = root)
+frame.pack(pady=20, padx=60, fill="both", expand=True)
 
-# Create the main window
-create_main_window()
-# def create_main_window():
-#     root = tk.Tk()
-#     root.title("Voice Assistant")
-#
-#     # Define the desired width and height for the button image
-#     button_width = 50
-#     button_height = 50
-#
-#     # Resize the image to fit the button
-#     resized_image = resize_image("C:\\Users\\Minea\\PycharmProjects\\pythonProject\\qm.png", button_width, button_height)  # Replace with your image path
-#
-#     # Button to activate the vocal assistant
-#     activate_button = tk.Button(root, text="Activate Assistant", command=activate_assistant, width=20)
-#     activate_button.pack(padx=20, pady=30)
-#
-#     # Button with resized image for assistant description
-#     description_button = tk.Button(root, image=resized_image, command=show_description, width=button_width, height=button_height)
-#     description_button.image = resized_image  # To prevent image garbage collection
-#     description_button.pack(pady=10)
-#
-#     root.mainloop()
-#
-# # Create the main window
-# create_main_window()
+label = customtkinter.CTkLabel(master = frame, text="Voice Assistant", font=("Times New Roman", 20))
+label.pack(pady=20, padx=10)
+
+button = customtkinter.CTkButton(master = frame, text="Activate Assistant", command=clicked, font=("Times New Roman", 15))
+button.pack(pady=20, padx=10)
+
+help_button = customtkinter.CTkButton(master = frame, text="Help", command=help, font=("Times New Roman", 15))
+help_button.pack(pady=12, padx=10)
+
+root.mainloop()
