@@ -16,7 +16,6 @@ import tetris
 import doodle_jump
 from set_reminder import set_reminder
 from celebrity import search_actress_images_on_google
-from movie import get_recipe
 import customtkinter
 wikipedia.set_lang("en")
 

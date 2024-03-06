@@ -1,8 +1,9 @@
 PYTHON = python
 SCRIPT = main.py
 VENV = venv
+ZIPFILE = vocal_assistant.zip  # Name of the zip file
 
-.PHONY: all run clean venv
+.PHONY: all run clean venvgi
 
 all: run
 
@@ -17,3 +18,6 @@ install: venv
 
 clean:
 	rmdir /s /q $(VENV)
+
+zip_project:
+	PowerShell -Command "Compress-Archive -Path .\* -DestinationPath $(ZIPFILE)"
